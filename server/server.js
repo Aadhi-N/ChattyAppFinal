@@ -11,7 +11,7 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
-<<<<<<< HEAD
+
 //Requiring randomly generated user ID
 const uuidv1 = require("uuid/v1");
 
@@ -25,7 +25,7 @@ wss.on("connection", ws => {
 
 	wss.clients.forEach(function each(client) {
 	 	client.send(JSON.stringify({connections: wss.clients.size, userColor: color1 }));
-=======
+
 const uuidv1 = require("uuid/v1");
 
 wss.on("connection", ws => {
@@ -33,28 +33,19 @@ wss.on("connection", ws => {
 
 	wss.clients.forEach(function each(client) {
 		client.send(JSON.stringify({connections: wss.clients.size}));
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 	});
 
 	ws.onmessage = function(fullMessage, notification) {
 		let parsedMessage = JSON.parse(fullMessage.data);
 		parsedMessage.connections = wss.clients.size;
 		parsedMessage.id = uuidv1();
-<<<<<<< HEAD
 		parsedMessage.userColor = color1;
-=======
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 
 		if (parsedMessage.type === "postMessage") {
 			parsedMessage.type = "incomingMessage";
 		} else if (parsedMessage.type === "postNotification") {
 			parsedMessage.type = "incomingNotification"
 		}
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 		wss.clients.forEach(function each(client) {
 			client.send(JSON.stringify(parsedMessage));
 		});

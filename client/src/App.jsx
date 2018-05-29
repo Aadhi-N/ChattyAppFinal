@@ -8,11 +8,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-<<<<<<< HEAD
 			currentUser: { name: "Anonymous" }, 
-=======
 			currentUser: { name: "" }, 
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 			messages: [],
 			notification: []
 		};
@@ -43,10 +40,7 @@ class App extends Component {
 				const messages = this.state.messages.concat(newMessage);
 				this.setState({ messages: messages });
 				this.setState({connections: newMessage.connections})
-<<<<<<< HEAD
         console.log('checking color', newMessage)
-=======
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 			};
 		};
 	}
@@ -68,12 +62,9 @@ class App extends Component {
 						const fullMessage = {
 						type: "postMessage",
 						username: newUser,
-<<<<<<< HEAD
 						content: newMessage,
             userColor: ""
-=======
 						content: newMessage
->>>>>>> 6e3f62a6207494c3f9190dfbcb062dd5b0bb4ae1
 						}
 
 						/* SENDING MESSAGE TO SERVER */
