@@ -5,9 +5,9 @@
 ## Screenshots
 
 
-!["Screenshot of chatty messages"]
+!["Screenshot of chatty messages"](https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/full%20app)
 
-(https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/full%20app)
-(https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/client%20connections.png)
-(https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/changing%20username.png?raw=true)
+!["When new clients are connected"](https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/client%20connections.png)
+
+!["Usernames have different colors"](https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/changing%20username.png?raw=true)
 
