@@ -1,5 +1,5 @@
 # Chatty App
-=====================
+
 Chatty App is a client-side single-page application where multiple users can chat with each other in real time. It is built with React and Websockets. 
 
 
