@@ -5,6 +5,10 @@ Chatty App is a client-side single-page application where multiple users can cha
 
 ## Preview of App
 
+#### User connects to the app, changing username and creating an instant message:
+!["Example of two users connected to the app."](https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/messages.gif)
+
+#### Two users connected to the app:
 !["Example of two users connected to the app."](https://github.com/Fathima-N/ChattyAppFinal/blob/master/screenshots/connections.gif)
 
 ### Trying it out locally: Getting started
