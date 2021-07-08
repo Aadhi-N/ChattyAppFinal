@@ -1,27 +1,34 @@
-import React, { Component } from "react";
-import Message from "./Message.jsx";
-import Chatbar from "./Chatbar.jsx";
-import Notification from "./Notification.jsx"
+import React, { Component } from 'react';
+import Message from './Message.jsx';
+import Notification from './Notification.jsx';
 
 class MessageList extends Component {
-	render() {
-    const messageList = this.props.messages.map((message, index) => {
-        if (message.type === "incomingMessage") {
-           return <Message key={index} message={message} />
-        } 
-
-        if (message.type === "incomingNotification") {
-          return <Notification content={message.content}/>
-        } 
-    });
-
-
-		return (
-			<main className="messages"> 
-      {messageList}
+  constructor (props) {
+    super(props);
+  }
+  render() {
+    return (
+      <main className="messages">
+         {this.props.messages.map((data) => {
+          if (data.type === 'incomingMessage') {
+            return (<Message
+              userID={ data.id }
+              currentUsername={ data.username }
+              currentMessage={ data.content }
+              color={ data.userColor } 
+            />)
+            } else {
+            return (<Notification
+              userID={ data.id }
+              oldUsername={ data.oldUsername }
+              newUsername={ data.newUsername }
+            />)
+            }
+          }
+        )}
       </main>
-		);
-	}
-}
+    );
+  }
+};
 
 export default MessageList;

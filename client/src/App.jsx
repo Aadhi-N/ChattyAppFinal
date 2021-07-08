@@ -1,86 +1,91 @@
-import React, { Component } from "react";
-import Navbar from "./Navbar.jsx";
-import Chatbar from "./Chatbar.jsx";
-import Message from "./Message.jsx";
+import React, { Component } from 'react';
+import ChatBar from "./ChatBar.jsx";
 import MessageList from "./MessageList.jsx";
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			currentUser: { name: "Anonymous" }, 
-			currentUser: { name: "" }, 
-			messages: [],
-			notification: []
-		};
-	}
+  constructor (props) {
+    super(props);
 
-	componentDidMount() {
-		this.socket = new WebSocket("ws://localhost:3001");
-		console.log("Component mounted...");
+    // Socket connection object stored
+    this.socket = new WebSocket('ws://localhost:3001');
+    this.state = {
+      currentUser: {name: "Anonymous"},
+      messages: [], // Incoming messages from server stored here 
+      usersCount: 0,
+      userColor: '', 
+    }
+  };
 
-		setTimeout(() => {
-			console.log("Simulating incoming message");
-			const newMessage1 = {
-				id: 3,
-				username: "Michelle",
-				content: "Hello there!"
-			};
+  componentDidMount() {
+    this.socket.onopen = function (event) {
+      console.log('Connected to server');
+    };
 
-			const messages = this.state.messages.concat(newMessage1);
-			this.setState({ messages: messages });
-		}, 3000);
+    // Handle user count and incoming messages
+    this.socket.onmessage = (event) => {
+      let data = JSON.parse(event.data);
+      if (event.data == parseInt(event.data)) {
+        this.setState({ 
+          usersCount: event.data
+        });
+      } else if (data.type == "color") {
+        this.setState({ 
+          userColor: data.color 
+        });
+      } else { 
+      this.setState({ messages: this.state.messages.concat(data.message)});
+      }
+    }
+  };
 
-		/* RECEIVING MESSAGE FROM SERVER */
-		this.socket.onopen = () => {
-			console.log("Connected to server");
+  // Create or update username
+  addName = (event) => {
+    const oldUsername = this.state.currentUser.name;
+    if (event.key === 'Enter') {
+      this.setState({ currentUser: {name: event.target.value }});
+      let msg = {
+        type: "postNotification",
+        oldUsername: oldUsername,
+        newUsername: event.target.value
+      };
+      this.sendMessageToServer({ message: msg });
+      event.target.value = '';
+    }
+  };
 
-			this.socket.onmessage = msg => {
-				let newMessage = JSON.parse(msg.data);
-				const messages = this.state.messages.concat(newMessage);
-				this.setState({ messages: messages });
-				this.setState({connections: newMessage.connections})
-        console.log('checking color', newMessage)
-			};
-		};
-	}
+  // Create message object 
+  addMessage = (event) => {
+    if (event.key === 'Enter') {
+      const msg = {
+        type: 'postMessage',
+        username: this.state.currentUser.name,
+        content: event.target.value,
+        userColor: this.state.userColor 
+      };
 
-			addMessage = (newMessage, newUser, editUser) => {
-				
-        if (editUser) {
-          const fullNotification = {
-						oldusername: this.state.currentUser.name,
-						username: editUser,
-						type: "postNotification",
-						content: `${this.state.currentUser.name} has changed their name to ${editUser}.`
-					}
-					this.socket.send(JSON.stringify(fullNotification));
-					const currentUser = {...this.state.currentUser, name: editUser}
-					this.setState({currentUser})
+      this.sendMessageToServer({ message: msg });
+      event.target.value = '';
+    }
+  };
 
-				} else {
-						const fullMessage = {
-						type: "postMessage",
-						username: newUser,
-						content: newMessage,
-            userColor: ""
-						content: newMessage
-						}
+  // Send msg object to server as a JSON-formatted string
+  sendMessageToServer = (msg) => {
+    this.socket.send(JSON.stringify(msg));
+  };
 
-						/* SENDING MESSAGE TO SERVER */
-						this.socket.send(JSON.stringify(fullMessage));
-				};
-			}
-
-	render() {
-		return (
-			<div>
-				<Navbar connections={this.state.connections} />
-				<Chatbar addMessage={this.addMessage} />
-				<MessageList messages={this.state.messages} />
-			</div>
-		);
-	}
-}; 
+  // States and props passed to children
+  render() {
+    return (
+      <div>
+        <nav className="navbar">
+          <a href="/" className="navbar-brand">Chatty App</a>
+          <span className="navbar-usersCount">{this.state.usersCount} users online</span>
+        </nav>
+        <MessageList messages={this.state.messages} userColor={this.state.userColor}/> 
+        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} addName={this.addName}/>
+      </div>
+    );
+  }
+};
 
 export default App;
